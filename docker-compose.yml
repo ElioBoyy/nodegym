@@ -1,0 +1,43 @@
+# Development Docker Compose - MongoDB + MongoExpress only
+# Use: docker-compose up -d
+# Application runs locally: npm run dev
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: gym_api_mongodb_dev
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: gym_api_dev
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongodb_dev_data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    networks:
+      - gym_api_dev_network
+
+  mongo-express:
+    image: mongo-express:1.0.2
+    container_name: gym_api_mongo_express
+    restart: unless-stopped
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: password
+      ME_CONFIG_MONGODB_URL: mongodb://admin:password@mongodb:27017/
+      ME_CONFIG_BASICAUTH: false
+    ports:
+      - '8081:8081'
+    depends_on:
+      - mongodb
+    networks:
+      - gym_api_dev_network
+
+volumes:
+  mongodb_dev_data:
+
+networks:
+  gym_api_dev_network:
+    driver: bridge
