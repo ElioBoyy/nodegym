@@ -459,13 +459,99 @@ export class MongoDBUserRepository implements UserRepository {
 
 #### Suppression des abstractions inutiles :
 
-- **ControllerFactory supprimée** : Pas de logique métier, juste du câblage
-- **Injection directe** dans routes.ts : Plus simple et transparent
+**ControllerFactory supprimée - Analyse détaillée :**
+
+```typescript
+// ❌ Pattern rejeté : ControllerFactory sans logique métier
+export class ControllerFactory {
+  constructor(private container: DIContainer) {}
+
+  createAuthController(): AuthController {
+    // Problème : Aucune logique métier, juste du wiring DI
+    return new AuthController(
+      this.container.get('CreateUser'),
+      this.container.get('AuthenticateUser'),
+      this.container.get('GetUserById'),
+      this.container.get('JwtService'),
+      this.container.get('UserRepository')
+    )
+  }
+}
+
+// Utilisation complexe
+const factory = new ControllerFactory(container)
+const controller = factory.createAuthController()
+```
+
+**Problèmes identifiés :**
+- **Abstraction vide** : Pas de règles métier, juste du mapping 1:1
+- **Complexité inutile** : Couche supplémentaire sans valeur ajoutée
+- **Maintenance** : Plus de fichiers à maintenir pour rien
+- **Debug difficile** : Stack trace plus longue
+- **Violation YAGNI** : "You Aren't Gonna Need It"
+
+**✅ Solution adoptée : Injection directe**
+
+```typescript
+// start/routes.ts - Simple et transparent
+const container = DIContainer.getInstance()
+
+const authController = new AuthController(
+  container.get('CreateUser'),
+  container.get('AuthenticateUser'),
+  container.get('GetUserById'),
+  container.get('JwtService'),
+  container.get('UserRepository')
+)
+```
+
+**Avantages de l'injection directe :**
+- **Transparence** : Dépendances visibles immédiatement
+- **Simplicité** : Code direct sans couches cachées
+- **Performance** : Pas d'appel de méthode supplémentaire
+- **Lisibilité** : On voit exactement ce dont chaque controller a besoin
+- **Debug facile** : Stack trace claire et courte
 
 #### Conservation des patterns utiles :
 
-- **UserFactory** : Règles métier par rôle (statuts différents)
-- **ChallengeFactory** : Calculs complexes avec stratégies
+**Comparaison : Factory avec logique métier vs Factory de wiring**
+
+```typescript
+// ✅ UserFactory CONSERVÉE - Logique métier réelle
+export class UserFactory {
+  static createGymOwner(): User {
+    return this.create({
+      role: UserRole.GYM_OWNER,
+      isActive: false  // RÈGLE MÉTIER : inactif par défaut, nécessite approbation
+    })
+  }
+
+  static createClient(): User {
+    return this.create({
+      role: UserRole.CLIENT,
+      isActive: true   // RÈGLE MÉTIER : actif immédiatement
+    })
+  }
+}
+
+// ✅ ChallengeFactory CONSERVÉE - Calculs métier complexes
+export class ChallengeFactory {
+  static create(request): Challenge {
+    const strategy = DifficultyStrategyFactory.createStrategy(request.difficulty)
+    
+    // LOGIQUE MÉTIER : Calculs automatiques basés sur la difficulté
+    const recommendedDuration = strategy.calculateRecommendedDuration()
+    const maxParticipants = strategy.calculateMaxParticipants()
+    const endDate = new Date(startDate.getTime() + recommendedDuration * 24 * 60 * 60 * 1000)
+    
+    return Challenge.create({ ...request, maxParticipants, endDate })
+  }
+}
+```
+
+**Différence fondamentale :**
+- **Factories conservées** : Encapsulent des **règles métier** et des **calculs complexes**
+- **ControllerFactory supprimée** : Ne faisait que du **wiring technique** sans logique métier
 
 #### Code lisible et expressif :
 
@@ -480,11 +566,26 @@ const authController = new AuthController(
 
 ### Règles appliquées :
 
-1. **Pas d'abstractions** sans logique métier réelle
-2. **Code expressif** et humanisé
-3. **Suppression systématique** du code mort
-4. **Patterns justifiés** par la valeur métier
-5. **Architecture simple** mais maintenable
+**Critères de décision pour les abstractions :**
+
+1. **Créer une abstraction SI** :
+   - Elle encapsule de la logique métier réelle
+   - Elle contient des règles/calculs complexes  
+   - Elle apporte une valeur fonctionnelle claire
+   - Elle simplifie vraiment l'utilisation
+
+2. **Supprimer une abstraction SI** :
+   - Elle ne fait que du mapping 1:1
+   - C'est juste du wiring technique
+   - Elle ajoute de la complexité sans bénéfice
+   - Elle viole le principe YAGNI
+
+**Résultat appliqué :**
+- **Pas d'abstractions** sans logique métier réelle
+- **Code expressif** et humanisé  
+- **Suppression systématique** du code mort
+- **Patterns justifiés** par la valeur métier
+- **Architecture simple** mais maintenable
 
 ### Résultat :
 
