@@ -7,43 +7,43 @@ export interface ChallengeDifficultyStrategy {
 }
 
 export class BeginnerDifficultyStrategy implements ChallengeDifficultyStrategy {
-  calculateDifficulty(challenge: Challenge): ChallengeDifficulty {
+  calculateDifficulty(_challenge: Challenge): ChallengeDifficulty {
     return ChallengeDifficulty.BEGINNER
   }
 
-  calculateRecommendedDuration(challenge: Challenge): number {
+  calculateRecommendedDuration(_challenge: Challenge): number {
     return 7
   }
 
-  calculateMaxParticipants(challenge: Challenge): number {
+  calculateMaxParticipants(_challenge: Challenge): number {
     return 50
   }
 }
 
 export class IntermediateDifficultyStrategy implements ChallengeDifficultyStrategy {
-  calculateDifficulty(challenge: Challenge): ChallengeDifficulty {
+  calculateDifficulty(_challenge: Challenge): ChallengeDifficulty {
     return ChallengeDifficulty.INTERMEDIATE
   }
 
-  calculateRecommendedDuration(challenge: Challenge): number {
+  calculateRecommendedDuration(_challenge: Challenge): number {
     return 14
   }
 
-  calculateMaxParticipants(challenge: Challenge): number {
+  calculateMaxParticipants(_challenge: Challenge): number {
     return 30
   }
 }
 
 export class AdvancedDifficultyStrategy implements ChallengeDifficultyStrategy {
-  calculateDifficulty(challenge: Challenge): ChallengeDifficulty {
+  calculateDifficulty(_challenge: Challenge): ChallengeDifficulty {
     return ChallengeDifficulty.ADVANCED
   }
 
-  calculateRecommendedDuration(challenge: Challenge): number {
+  calculateRecommendedDuration(_challenge: Challenge): number {
     return 30
   }
 
-  calculateMaxParticipants(challenge: Challenge): number {
+  calculateMaxParticipants(_challenge: Challenge): number {
     return 15
   }
 }

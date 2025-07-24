@@ -1,10 +1,5 @@
 import { Collection } from 'mongodb'
-import {
-  Challenge,
-  ChallengeStatus,
-  ChallengeDifficulty,
-  ChallengeProps,
-} from '../../domain/entities/challenge.js'
+import { Challenge, ChallengeStatus, ChallengeDifficulty } from '../../domain/entities/challenge.js'
 import {
   ChallengeRepository,
   ChallengeFilters,

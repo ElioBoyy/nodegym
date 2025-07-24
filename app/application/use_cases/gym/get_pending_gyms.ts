@@ -1,6 +1,5 @@
 import { Gym } from '../../../domain/entities/gym.js'
 import { GymRepository } from '../../../domain/repositories/gym_repository.js'
-import { UserRepository } from '../../../domain/repositories/user_repository.js'
 import { PaginationOptions } from '../../../domain/repositories/user_repository.js'
 
 export interface GetPendingGymsRequest {
@@ -15,10 +14,7 @@ export interface GetPendingGymsResponse {
 }
 
 export class GetPendingGyms {
-  constructor(
-    private gymRepository: GymRepository,
-    private userRepository: UserRepository
-  ) {}
+  constructor(private gymRepository: GymRepository) {}
 
   async execute(request: GetPendingGymsRequest = {}): Promise<GetPendingGymsResponse> {
     const { gyms, total } = await this.gymRepository.findPending(request.pagination)

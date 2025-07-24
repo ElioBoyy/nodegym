@@ -148,10 +148,7 @@ export class DIContainer {
       )
     )
 
-    this.services.set(
-      'GetPendingGyms',
-      new GetPendingGyms(this.get('GymRepository'), this.get('UserRepository'))
-    )
+    this.services.set('GetPendingGyms', new GetPendingGyms(this.get('GymRepository')))
 
     this.services.set(
       'CreateChallenge',
@@ -259,8 +256,7 @@ export class DIContainer {
       new AddWorkoutSession(
         this.get('ChallengeParticipationRepository'),
         this.get('UserRepository'),
-        this.get('BadgeService'),
-        this.get('NotificationService')
+        this.get('BadgeService')
       )
     )
 

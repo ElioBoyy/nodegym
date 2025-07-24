@@ -2,7 +2,6 @@ import { ChallengeParticipation } from '../../../domain/entities/challenge_parti
 import { ChallengeParticipationRepository } from '../../../domain/repositories/challenge_participation_repository.js'
 import { UserRepository } from '../../../domain/repositories/user_repository.js'
 import { BadgeService } from '../../../domain/services/badge_service.js'
-import { NotificationService } from '../../../domain/services/notification_service.js'
 
 export interface AddWorkoutSessionRequest {
   participationId: string
@@ -18,8 +17,7 @@ export class AddWorkoutSession {
   constructor(
     private participationRepository: ChallengeParticipationRepository,
     private userRepository: UserRepository,
-    private badgeService: BadgeService,
-    private notificationService: NotificationService
+    private badgeService: BadgeService
   ) {}
 
   async execute(request: AddWorkoutSessionRequest): Promise<ChallengeParticipation> {

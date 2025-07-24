@@ -34,7 +34,7 @@ const sessionConfig = defineConfig({
    * variable in order to infer the store name without any
    * errors.
    */
-  store: env.get('SESSION_DRIVER', 'cookie'),
+  store: env.get('SESSION_DRIVER', 'cookie') as 'cookie' | 'memory',
 
   /**
    * List of configured stores. Refer documentation to see

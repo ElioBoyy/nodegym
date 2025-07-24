@@ -12,13 +12,13 @@ export interface UserSummary {
   totalBadges?: number
 }
 
-export class GetUserSummaryQuery implements Query<UserSummary> {
+export class GetUserSummaryQuery implements Query {
   readonly queryType = 'GetUserSummary'
 
   constructor(public readonly userId: string) {}
 }
 
-export class GetUsersListQuery implements Query<UserSummary[]> {
+export class GetUsersListQuery implements Query {
   readonly queryType = 'GetUsersList'
 
   constructor(

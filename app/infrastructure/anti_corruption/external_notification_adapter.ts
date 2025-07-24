@@ -122,7 +122,7 @@ export class NotificationServiceAdapter implements NotificationService {
     await this.provider.sendEmail(userEmail, subject, body)
   }
 
-  async sendBadgeEarned(userId: string, badgeName: string, badgeId: string): Promise<void> {
+  async sendBadgeEarned(userId: string, badgeName: string, _badgeId: string): Promise<void> {
     const userEmail = await this.getUserEmail(userId)
     const subject = this.i18nService.translate('email.badgeEarned.subject')
     const body = this.i18nService.translate('email.badgeEarned.body', { badgeName })
@@ -148,7 +148,7 @@ export class NotificationServiceAdapter implements NotificationService {
   async sendChallengeCompleted(
     userId: string,
     challengeTitle: string,
-    challengeId: string
+    _challengeId: string
   ): Promise<void> {
     const userEmail = await this.getUserEmail(userId)
     const subject = this.i18nService.translate('email.challengeCompleted.subject', {
@@ -159,7 +159,7 @@ export class NotificationServiceAdapter implements NotificationService {
     await this.provider.sendEmail(userEmail, subject, body)
   }
 
-  async sendGymApproved(ownerId: string, gymName: string, gymId: string): Promise<void> {
+  async sendGymApproved(ownerId: string, gymName: string, _gymId: string): Promise<void> {
     const ownerEmail = await this.getUserEmail(ownerId)
     const subject = this.i18nService.translate('email.gymApproval.subject')
     const body = this.i18nService.translate('email.gymApproval.body', { gymName })
@@ -170,7 +170,7 @@ export class NotificationServiceAdapter implements NotificationService {
   async sendChallengeJoined(
     userId: string,
     challengeTitle: string,
-    challengeId: string
+    _challengeId: string
   ): Promise<void> {
     const userEmail = await this.getUserEmail(userId)
     const subject = this.i18nService.translate('email.challengeJoined.subject', { challengeTitle })

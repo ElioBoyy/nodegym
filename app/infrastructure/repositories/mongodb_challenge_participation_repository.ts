@@ -3,7 +3,6 @@ import {
   ChallengeParticipation,
   ParticipationStatus,
   WorkoutSession,
-  ChallengeParticipationProps,
 } from '../../domain/entities/challenge_participation.js'
 import {
   ChallengeParticipationRepository,

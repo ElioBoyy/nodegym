@@ -41,9 +41,9 @@ router.use([() => import('@adonisjs/core/bodyparser_middleware')])
 export const middleware = router.named({
   auth: () => import('#middleware/auth_middleware'),
   superAdmin: () =>
-    import('#middleware/role_middleware').then((m) => ({ default: m.superAdminMiddleware })),
+    import('#middleware/role_middleware').then((m) => ({ default: m.SuperAdminMiddleware })),
   gymOwner: () =>
-    import('#middleware/role_middleware').then((m) => ({ default: m.gymOwnerMiddleware })),
+    import('#middleware/role_middleware').then((m) => ({ default: m.GymOwnerMiddleware })),
   client: () =>
-    import('#middleware/role_middleware').then((m) => ({ default: m.clientMiddleware })),
+    import('#middleware/role_middleware').then((m) => ({ default: m.ClientMiddleware })),
 })

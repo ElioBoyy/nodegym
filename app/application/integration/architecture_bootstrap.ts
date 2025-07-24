@@ -73,15 +73,9 @@ export class ArchitectureBootstrap {
     )
     eventDispatcher.register('UserActivated', new UserActivatedHandler(eventStore))
     eventDispatcher.register('UserDeactivated', new UserDeactivatedHandler(eventStore))
-    eventDispatcher.register(
-      'ChallengeCreated',
-      new ChallengeCreatedHandler(notificationService, eventStore)
-    )
+    eventDispatcher.register('ChallengeCreated', new ChallengeCreatedHandler(eventStore))
     eventDispatcher.register('UserJoinedChallenge', new UserJoinedChallengeHandler(eventStore))
-    eventDispatcher.register(
-      'ChallengeCompleted',
-      new ChallengeCompletedHandler(notificationService, eventStore)
-    )
+    eventDispatcher.register('ChallengeCompleted', new ChallengeCompletedHandler(eventStore))
     eventDispatcher.register('BadgeEarned', new BadgeEarnedHandler(notificationService, eventStore))
   }
 

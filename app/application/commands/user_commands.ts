@@ -9,7 +9,7 @@ import {
   UserDeactivatedEvent,
 } from '../../domain/events/user_events.js'
 
-export class CreateUserCommand implements Command<User> {
+export class CreateUserCommand implements Command {
   readonly commandType = 'CreateUser'
 
   constructor(
@@ -21,7 +21,7 @@ export class CreateUserCommand implements Command<User> {
   ) {}
 }
 
-export class ActivateUserCommand implements Command<void> {
+export class ActivateUserCommand implements Command {
   readonly commandType = 'ActivateUser'
 
   constructor(
@@ -30,7 +30,7 @@ export class ActivateUserCommand implements Command<void> {
   ) {}
 }
 
-export class DeactivateUserCommand implements Command<void> {
+export class DeactivateUserCommand implements Command {
   readonly commandType = 'DeactivateUser'
 
   constructor(

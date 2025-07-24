@@ -75,10 +75,7 @@ export class UserDeactivatedHandler implements DomainEventHandler<UserDeactivate
 }
 
 export class ChallengeCreatedHandler implements DomainEventHandler<ChallengeCreatedEvent> {
-  constructor(
-    private notificationService: NotificationService,
-    private eventStore: EventStore
-  ) {}
+  constructor(private eventStore: EventStore) {}
 
   async handle(event: ChallengeCreatedEvent): Promise<void> {
     await this.eventStore.saveEvents(event.challengeId, [event], 0)
@@ -94,10 +91,7 @@ export class UserJoinedChallengeHandler implements DomainEventHandler<UserJoined
 }
 
 export class ChallengeCompletedHandler implements DomainEventHandler<ChallengeCompletedEvent> {
-  constructor(
-    private notificationService: NotificationService,
-    private eventStore: EventStore
-  ) {}
+  constructor(private eventStore: EventStore) {}
 
   async handle(event: ChallengeCompletedEvent): Promise<void> {
     await this.eventStore.saveEvents(event.challengeId, [event], 0)

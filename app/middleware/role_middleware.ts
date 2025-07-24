@@ -2,8 +2,10 @@ import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
 import { UserRole } from '../domain/entities/user.js'
 
-export function createRoleMiddleware(allowedRoles: UserRole[]) {
-  return (ctx: HttpContext, next: NextFn) => {
+abstract class RoleMiddleware {
+  protected abstract allowedRoles: UserRole[]
+
+  async handle(ctx: HttpContext, next: NextFn) {
     const { response, auth } = ctx
 
     if (!auth || !auth.user) {
@@ -11,18 +13,26 @@ export function createRoleMiddleware(allowedRoles: UserRole[]) {
     }
 
     const userRole = auth.user.role as UserRole
-    if (!allowedRoles.includes(userRole)) {
+    if (!this.allowedRoles.includes(userRole)) {
       return response.status(403).json({ error: 'Insufficient permissions' })
     }
 
-    return next()
+    await next()
   }
 }
 
-export const superAdminMiddleware = createRoleMiddleware([UserRole.SUPER_ADMIN])
-export const gymOwnerMiddleware = createRoleMiddleware([UserRole.GYM_OWNER, UserRole.SUPER_ADMIN])
-export const clientMiddleware = createRoleMiddleware([
-  UserRole.CLIENT,
-  UserRole.GYM_OWNER,
-  UserRole.SUPER_ADMIN,
-])
+export class SuperAdminMiddleware extends RoleMiddleware {
+  protected allowedRoles = [UserRole.SUPER_ADMIN]
+}
+
+export class GymOwnerMiddleware extends RoleMiddleware {
+  protected allowedRoles = [UserRole.GYM_OWNER, UserRole.SUPER_ADMIN]
+}
+
+export class ClientMiddleware extends RoleMiddleware {
+  protected allowedRoles = [UserRole.CLIENT, UserRole.GYM_OWNER, UserRole.SUPER_ADMIN]
+}
+
+export const superAdminMiddleware = SuperAdminMiddleware
+export const gymOwnerMiddleware = GymOwnerMiddleware
+export const clientMiddleware = ClientMiddleware
